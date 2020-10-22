@@ -64,6 +64,7 @@ passport.use(
           password: hash,
           role: "admin",
         }).save();
+        delete user.password;
         return done(null, user);
       } catch (error) {
         console.error(error);
