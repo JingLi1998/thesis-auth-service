@@ -18,6 +18,10 @@ export const login = asyncMiddleware(async (req, res) => {
   passport.authenticate("login", (error, user) => {
     if (error) {
       return res.status(error.status).json(error);
+    } else if (!user) {
+      return res
+        .status(400)
+        .json({ status: 400, message: "Username or password incorrect" });
     }
 
     const payload = {

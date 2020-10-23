@@ -26,7 +26,12 @@ const main = async () => {
 
   const app = express();
 
-  app.use(cors());
+  app.use(
+    cors({
+      origin: ["http://localhost:3000", "https://www.trackntrace.network"],
+      credentials: true,
+    })
+  );
 
   app.use(cookieParser());
 
