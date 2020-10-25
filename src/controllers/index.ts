@@ -12,7 +12,18 @@ export const signup = asyncMiddleware(async (req, res) => {
     if (error) {
       return res.status(error.status).json(error);
     }
-    return res.status(201).json(user);
+
+    const payload = {
+      email: user.email,
+      role: user.role,
+      expiration: Date.now() + parseInt(process.env.EXPIRATION_TIME_IN_MS!),
+    };
+
+    const token = jwt.sign(JSON.stringify(payload), process.env.JWT_SECRET!);
+
+    res.cookie("jwt", token, { httpOnly: true, secure: false });
+
+    return res.status(201).json({ user, message: "Signed up successfully" });
   })(req, res);
 });
 
