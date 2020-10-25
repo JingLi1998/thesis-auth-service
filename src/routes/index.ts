@@ -1,6 +1,6 @@
 import { Router } from "express";
-import passport from "passport";
 import * as controller from "../controllers";
+import { jwtMiddleware } from "../middleware/jwtMiddleware";
 
 export const router = Router();
 
@@ -12,10 +12,8 @@ router.post("/login", controller.login);
 
 router.get("/logout", controller.logout);
 
-router.get(
-  "/protected",
-  passport.authenticate("jwt", { session: false }),
-  (_req, res) => {
-    return res.status(200).json({ message: "Protected access granted" });
-  }
-);
+router.get("/current-user", jwtMiddleware, controller.currentUser);
+
+router.get("/protected", jwtMiddleware, (_req, res) => {
+  return res.status(200).json({ message: "Protected access granted" });
+});

@@ -1,7 +1,9 @@
-import passport from "passport";
-import { asyncMiddleware } from "../middleware/asyncMiddleware";
 import dotenv from "dotenv";
+import createHttpError from "http-errors";
 import jwt from "jsonwebtoken";
+import passport from "passport";
+import { User } from "../../../database/src/entities/users";
+import { asyncMiddleware } from "../middleware/asyncMiddleware";
 
 dotenv.config();
 
@@ -26,6 +28,7 @@ export const login = asyncMiddleware(async (req, res) => {
 
     const payload = {
       email: user.email,
+      role: user.role,
       expiration: Date.now() + parseInt(process.env.EXPIRATION_TIME_IN_MS!),
     };
 
@@ -43,4 +46,13 @@ export const logout = asyncMiddleware(async (req, res) => {
   } else {
     res.status(401).json({ status: 401, message: "Invalid JWT" });
   }
+});
+
+export const currentUser = asyncMiddleware(async (req: any, res) => {
+  const user = await User.findOne({ where: { email: req.user.email } });
+  if (!user) {
+    throw createHttpError(401, "Unauthorized");
+  }
+  delete user.password;
+  return res.status(200).json(user);
 });
