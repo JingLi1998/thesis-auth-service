@@ -4,7 +4,7 @@
   "description": "Handles authentication requests",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha dist/auth-service/src/tests/test.js",
     "start": "node dist/auth-service/src/index.js",
     "build": "tsc",
     "watch": "tsc -w",
@@ -31,15 +31,20 @@
     "typeorm": "^0.2.26"
   },
   "devDependencies": {
+    "@types/chai": "^4.2.14",
     "@types/cookie-parser": "^1.4.2",
     "@types/cors": "^2.8.8",
     "@types/express": "^4.17.8",
     "@types/http-errors": "^1.8.0",
+    "@types/mocha": "^8.0.3",
     "@types/morgan": "^1.9.1",
     "@types/node": "^14.11.1",
     "@types/passport": "^1.0.4",
     "@types/passport-jwt": "^3.0.3",
     "@types/passport-local": "^1.0.33",
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
+    "mocha": "^8.2.0",
     "nodemon": "^2.0.4",
     "typescript": "^4.0.3"
   }
